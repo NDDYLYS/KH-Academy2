@@ -63,6 +63,9 @@ public class BookDao
 		BookMapper bookMapper = new BookMapper();
 		String sql = "select * from book where instr("+column+", ?) > 0 "
 				+ "order by "+column+" asc, book_id asc";
+		// asdasldkajhdasldk#4asd;kasdasjdasd
+		// replace(#4, column)'
+		
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, bookMapper, params);
 	}
