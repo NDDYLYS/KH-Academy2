@@ -1,6 +1,7 @@
 package jdbc.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -46,12 +47,19 @@ public class StudentDao
     	return 0 < result;
 	}
 	
-	public List<StudentDto> selectList()
+	public List<StudentDto> selectList(String column, String keyword)
 	{
+		Set<String> allowList = Set.of("student_name");
+		
+		if (allowList.contains(column) == false)
+			return List.of(); // 비어있는 리스트;		
+		
 		JdbcTemplate jdbcTemplate = JDBCHelper.getJdbcTemplate();
-    	String sql = "select * from student order by student_no asc";
-    	StudentMapper studentMapper = new StudentMapper();
-    	return jdbcTemplate.query(sql, studentMapper);
+		StudentMapper studentMapper = new StudentMapper();
+		String sql = "select * from student where instr("+column+", ?) > 0 "
+				+ "order by "+column+" asc, student_no asc";
+		Object[] params = {keyword};
+		return jdbcTemplate.query(sql, studentMapper, params);
 	}
 	
 	public StudentDto selectSolo(String studentName)
