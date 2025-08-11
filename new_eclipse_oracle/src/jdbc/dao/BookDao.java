@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import jdbc.dto.BookDto;
+import jdbc.dto.StudentDto;
 import jdbc.insert.JDBCHelper;
 import jdbc.mapper.BookMapper;
 import jdbc.mapper.StudentMapper;
@@ -68,5 +69,20 @@ public class BookDao
 		
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, bookMapper, params);
+	}
+	
+	public BookDto selectOne(String column, int book_id)
+	{
+		Set<String> allowList = Set.of("book_id");
+		
+		if (allowList.contains(column) == false)
+			return null; // 비어있는 리스트;	
+		
+		JdbcTemplate jdbcTemplate = JDBCHelper.getJdbcTemplate();
+    	String sql = "select * from book where book_id = ?";
+    	Object[] params = {book_id};
+    	BookMapper bookMapper = new BookMapper();
+    	List<BookDto> list = jdbcTemplate.query(sql, bookMapper, params);
+    	return list.isEmpty() ? null : list.get(0);
 	}
 }

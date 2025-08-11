@@ -15,9 +15,9 @@ public class Test04학생검색
     	String studentName = sc.nextLine();
     	
     	StudentDao studentDao = new StudentDao();
-    	StudentDto element = studentDao.selectSolo(studentName);
+    	//StudentDto element = studentDao.selectSolo(studentName);
     	
     	System.out.println("조회 결과 : 1개");
-    	System.out.println(element);
+    	//System.out.println(element);
     }
 }

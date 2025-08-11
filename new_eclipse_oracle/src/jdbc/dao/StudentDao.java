@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import jdbc.dto.PokemonDto;
 import jdbc.dto.StudentDto;
 import jdbc.insert.JDBCHelper;
 import jdbc.mapper.StudentMapper;
@@ -62,12 +63,18 @@ public class StudentDao
 		return jdbcTemplate.query(sql, studentMapper, params);
 	}
 	
-	public StudentDto selectSolo(String studentName)
+	public StudentDto selectOne(String column, int student_no)
 	{
+		Set<String> allowList = Set.of("student_no");
+		
+		if (allowList.contains(column) == false)
+			return null; // 비어있는 리스트;	
+		
 		JdbcTemplate jdbcTemplate = JDBCHelper.getJdbcTemplate();
-    	String sql = "select * from student where student_name = ?";
-    	Object[] params = {studentName};
+    	String sql = "select * from student where student_no = ?";
+    	Object[] params = {student_no};
     	StudentMapper studentMapper = new StudentMapper();
-    	return jdbcTemplate.query(sql, params, studentMapper).getFirst();
+    	List<StudentDto> list = jdbcTemplate.query(sql, studentMapper, params);
+    	return list.isEmpty() ? null : list.get(0);
 	}
 }

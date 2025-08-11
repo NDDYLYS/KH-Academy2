@@ -42,7 +42,7 @@ public class PokemonDao
     	return 0 < result;
 	}
 	
-	public List<BookDto> selectList(String column, String keyword)
+	public List<PokemonDto> selectList(String column, String keyword)
 	{
     	Set<String> allowList = Set.of("pokemon_name", "pokemon_type");
 		
@@ -55,5 +55,18 @@ public class PokemonDao
 				+ "order by "+column+" asc, pokemon_no asc";
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, pokemonMapper, params);
+	}
+	
+	public PokemonDto selectOne(int pokemonNo) 
+	{
+		JdbcTemplate jdbcTemplate = JDBCHelper.getJdbcTemplate();
+		String sql = "select * from pokemon where pokemon_no = ?";
+    	Object[] params = {pokemonNo};
+    	PokemonMapper pokemonMapper = new PokemonMapper();
+    	// sql, params, mapper를 쓰면 List가 나온다
+    	// ResultSetExtractor / PokemonDto
+    	List<PokemonDto> list = jdbcTemplate.query(sql, pokemonMapper, params);
+    	
+    	return list.isEmpty() ? null : list.get(0);
 	}
 }

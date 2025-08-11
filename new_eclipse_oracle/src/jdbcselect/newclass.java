@@ -1,4 +1,4 @@
-package jdbc02;
+package jdbcselect;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 

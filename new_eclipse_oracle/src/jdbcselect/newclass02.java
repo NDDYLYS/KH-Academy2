@@ -1,4 +1,4 @@
-package jdbc02;
+package jdbcselect;
 
 import java.util.List;
 import java.util.Set;
